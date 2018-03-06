@@ -6,7 +6,7 @@ import com.jz.anntation.JzService;
 public class CeshiService implements ICeshiService {
 
 	public String getName(String name){
-		return "Œ“Ω–1"+name;
+		return "Œ“Ω–"+name;
 		
 	} 
 	
