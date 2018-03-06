@@ -74,6 +74,7 @@ public class JzDispatcherServlet extends HttpServlet {
 			throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
 		String url = req.getRequestURI();
+		System.out.println("url "+url);
 		String contextpath = req.getContextPath();
 		url = url.replace(contextpath, "").replaceAll("/+", "/");
 		Handler handler = getHandler(url);
@@ -88,6 +89,7 @@ public class JzDispatcherServlet extends HttpServlet {
 	     Object [] paramevalues=new Object[parametype.length];
 	     Map<String, String[]> parames=req.getParameterMap();
 	     for (Entry<String, String[]> entry : parames.entrySet()) {
+	    	 System.out.println(entry.getValue()+"parame");
 			String value=Arrays.toString(entry.getValue()).replaceAll("\\[|\\]", "").replaceAll(",\\s", ",");
 			if(!handler.paramMap.containsKey(entry.getKey())){continue;}
 			int index=handler.paramMap.get(entry.getKey());
@@ -169,10 +171,11 @@ public class JzDispatcherServlet extends HttpServlet {
 				String beanName = autowirid.value();
 				if ("".equals(beanName)) {
 					beanName = field.getType().getName();
-					System.out.println(beanName);
 				}
+				//设置可以访问私有属性
 				field.setAccessible(true);
 				try {
+					System.out.println(beanName);
 					System.out.println(entry.getValue()+"222");
 					field.set(entry.getValue(), ioc.get(beanName));
 				} catch (Exception e) {
@@ -186,7 +189,6 @@ public class JzDispatcherServlet extends HttpServlet {
 
 	private void doInstance() {
 		for (String classname : classNames) {
-			System.out.println(classname+"-----------");
 			try {
 				Class<?> clazz = Class.class.forName(classname);
 				// 用反射实现实例化
@@ -215,6 +217,9 @@ public class JzDispatcherServlet extends HttpServlet {
 				e.printStackTrace();
 				continue;
 			}
+		}
+		for (Entry<String, Object> string : ioc.entrySet()) {
+			System.out.println("beanName:  "+string.getKey());
 		}
 	}
 
