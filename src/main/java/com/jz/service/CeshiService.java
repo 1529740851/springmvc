@@ -10,7 +10,7 @@ public class CeshiService implements ICeshiService {
 		
 	}
 
-	public String getNameAge(String name, String age) {
+	public String getNameAge(String name, Integer age) {
 		return "ÎÒ½Ğ"+name+"½ñÄê"+age+"Ëê";
 	}
 

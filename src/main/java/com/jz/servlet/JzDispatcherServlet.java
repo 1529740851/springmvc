@@ -74,9 +74,9 @@ public class JzDispatcherServlet extends HttpServlet {
 			throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
 		String url = req.getRequestURI();
-		System.out.println("url "+url);
 		String contextpath = req.getContextPath();
 		url = url.replace(contextpath, "").replaceAll("/+", "/");
+		System.out.println("url "+url);
 		Handler handler = getHandler(url);
 		if (handler == null) {
 			resp.getWriter().write("404 Not found");
@@ -93,6 +93,7 @@ public class JzDispatcherServlet extends HttpServlet {
 			String value=Arrays.toString(entry.getValue()).replaceAll("\\[|\\]", "").replaceAll(",\\s", ",");
 			if(!handler.paramMap.containsKey(entry.getKey())){continue;}
 			int index=handler.paramMap.get(entry.getKey());
+			//参数暂时只能String和Integer
 			paramevalues[index]=convert(parametype[index],value);
 	     }
 	     System.out.println(HttpServletRequest.class.getName());
@@ -100,7 +101,7 @@ public class JzDispatcherServlet extends HttpServlet {
 	     paramevalues[reqIndex]=req;
 	     int respIndex=handler.paramMap.get(HttpServletResponse.class.getName());
 	     paramevalues[respIndex]=resp;
-		System.out.println(method.getName());
+		 System.out.println(method.getName());
 	
 			method.invoke(handler.getController(), paramevalues);
 		} catch (Exception e) {
@@ -289,8 +290,9 @@ class Handler {
 	
 	}
 	private  void putParamMap(Method method){
-		Annotation[][] pa=method.getParameterAnnotations();
 		//获取所有参数注解
+		Annotation[][] pa=method.getParameterAnnotations();
+		
 		for (int i = 0; i < pa.length; i++) {
 		for (Annotation a:pa[i]) {
 			if(a instanceof JzRequestParam){

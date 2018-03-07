@@ -33,7 +33,7 @@ private ICeshiService ceshiService;
 	}
 	
 	@JzRequestMapping("/xx2")
-	public void get2(HttpServletRequest req, HttpServletResponse resp,@JzRequestParam(value="name")String name,@JzRequestParam(value="age")String age ){
+	public void get2(HttpServletRequest req, HttpServletResponse resp,@JzRequestParam(value="name")String name,@JzRequestParam(value="age")Integer age ){
 	resp.setHeader("Content-type", "text/html;charset=UTF-8");  
 	String name1=ceshiService.getNameAge(name, age);
 	String name2=ceshiService2.getName(name);
